@@ -54,8 +54,8 @@ struct TestCase {
 }
 
 fn default_test_parameters() -> Vec<TestParameters> {
-    let concurrency_options = vec![1, 25, 100, 500, 1000, 10000];
-    let threads_options = vec![1, 2, 5, 10];
+    let concurrency_options = vec![1, 25, 100, 1000];
+    let threads_options = vec![1, 2, 5];
     return concurrency_options.iter().flat_map(|c|
         threads_options.iter().map(|t|
             TestParameters {
@@ -179,7 +179,7 @@ fn run_test(case: &TestCase) -> TestRun {
         panic!("Failed to start test case {}", case.number);
     }
     println!("Found webserver, running rewrk");
-    const STANDARD_TEST_DURATION: &str = "30s";
+    const STANDARD_TEST_DURATION: &str = "15s";
     let mut results = vec![];
     for test_parameter in default_test_parameters() {
         println!(
