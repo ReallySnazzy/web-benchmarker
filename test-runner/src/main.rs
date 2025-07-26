@@ -155,7 +155,7 @@ fn run_test(case: &TestCase) -> TestRun {
     const MAX_BUILD_RUN_WAIT_MINUTES: u64 = 10;
     let mut started = false;
     for _ in 1..MAX_BUILD_RUN_WAIT_MINUTES {
-        std::thread::sleep(Duration::from_millis(5*1000));
+        std::thread::sleep(Duration::from_millis(60*1000));
         let request_result = smol::block_on(async {
             surf::get(&case.info.url).recv_string().await
         });
