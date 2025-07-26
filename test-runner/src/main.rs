@@ -144,8 +144,6 @@ fn run_test(case: &TestCase) -> TestRun {
     let devenv_proc = Command::new("devenv")
         .args(["up", "-d"])
         .current_dir(&case.dir)
-        .stdout(std::process::Stdio::piped())
-        .stderr(std::process::Stdio::piped())
         .spawn()
         .expect(&format!(
             "Failed to start devenv up for test case {}",
