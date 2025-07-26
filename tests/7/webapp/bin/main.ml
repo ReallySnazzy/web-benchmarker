@@ -18,4 +18,4 @@ let () =
     Eio.Net.listen env#net ~sw ~backlog:128 ~reuse_addr:true
       (`Tcp (Eio.Net.Ipaddr.V4.any, !port))
   and server = Cohttp_eio.Server.make ~callback:handler () in
-  Cohttp_eio.Server.run socket server ~on_error:log_warning
+  Cohttp_eio.Server.run ~additional_domains:(env#domain_mgr, Domain.recommended_domain_count () - 1) ~on_error:log_warning socket server
