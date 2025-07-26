@@ -2,5 +2,5 @@
 
 {
   languages.deno.enable = true;
-  processes.webapp.exec = 'cd webapp && deno run -A main.ts'
+  processes.webapp.exec = "cd webapp && deno run -A main.ts";
 }
