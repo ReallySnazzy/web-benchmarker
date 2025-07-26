@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webbench.app</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <script>
+        let mainData = {
+            selectedLanguage: 'all',
+            selectedTestType: 'all',
+            testData: [],
+            selectedParameters: '5 threads 1000 concurrent requests',
+
+            get languages() {
+                const languages = this.testData.map(item => item.test_info.language);
+                return [...new Set(languages)].sort();
+            },
+            
+            get testTypes() {
+                const types = this.testData.map(item => item.test_info.test_type);
+                return [...new Set(types)].sort();
+            },
+
+            get paramOptions() {
+                const seen = new Set();
+                const options = this.testData.flatMap(item => item.results)
+                    .map(r => r.parameter)
+                    .toSorted((a, b) => a.concurrent_requests - b.concurrent_requests)
+                    .toSorted((a, b) => a.threads - b.threads)
+                    .map(res => `${res.threads} threads ${res.concurrent_requests} concurrent requests`);
+                const distinctOptions = [];
+                for (option of options) {
+                    if (!distinctOptions.includes(option)) {
+                        distinctOptions.push(option);
+                    }
+                }
+                return distinctOptions;
+            },
+
+            get filteredData() {
+                let data = this.testData.flatMap(test => test.results.map((result) => ({test, result})))
+                    .map(entry => ({
+                        case_number: entry.test.case_number,
+                        key: `${entry.test.case_number}-${entry.result.parameter.threads}-${entry.result.parameter.concurrent_requests}`,
+                        notes: entry.test.test_info.notes,
+                        language: entry.test.test_info.language,
+                        test_type: entry.test.test_info.test_type,
+                        metrics: entry.result.metrics,
+                        parameters: entry.result.parameter
+                    }));
+                if (this.selectedLanguage !== 'all') {
+                    data = data.filter(item => item.language == this.selectedLanguage);
+                }
+                if (this.selectedTestType !== 'all') {
+                    data = data.filter(item => item.test_type == this.selectedTestType);
+                }
+                const [selectedThreads, _, selectedConcurrency] = this.selectedParameters.split(' ');
+                data = data.filter(d => d.parameters.threads == selectedThreads)
+                    .filter(d => d.parameters.concurrent_requests == selectedConcurrency);
+                return data;
+            }
+        };
+    </script>
+
+    <div x-data="mainData" class="container mx-auto p-4 sm:p-6 lg:p-8" x-init="testData = await fetch('https://raw.githubusercontent.com/ReallySnazzy/web-benchmarker/refs/heads/master/latest-run.json').then(r => r.json())">
+
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">webbench.app</h1>
+            <p class="mt-2 text-lg text-gray-600">Filter and discover web framework's performance</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="language-filter" class="block text-sm font-medium text-gray-700 mb-2">Programming Language</label>
+                    <select id="language-filter" x-model="selectedLanguage" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        <option value="all">All Languages</option>
+                        <template x-for="language in languages" :key="language">
+                            <option :value="language" x-text="language"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="type-filter" class="block text-sm font-medium text-gray-700 mb-2">Test Type</label>
+                    <select id="type-filter" x-model="selectedTestType" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        <option value="all">All Types</option>
+                        <template x-for="type in testTypes" :key="type">
+                            <option :value="type" x-text="type"></option>
+                        </template>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="param-filter" class="block text-sm font-medium text-gray-700 mb-2">Rewrk Parameters</label>
+                    <select id="param-filter" x-model="selectedParameters" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        <template x-for="param in paramOptions" :key="param">
+                            <option :value="param" x-text="param" :selected="param == selectedParameters"></option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Language</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Test Type</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Notes</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Req/sec</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Latency</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <template x-for="item in filteredData" :key="item.case_number">
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-3 py-1 inline-flex text-sm font-semibold rounded-full" x-text="item.language"></span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" x-text="item.test_type"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="item.notes"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="Math.round(item.metrics.requests_avg)"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="`${item.metrics.latency_avg.toFixed(2)}ms +- ${item.metrics.latency_std_deviation.toFixed(2)}ms`"></td>
+                            </tr>
+                        </template>
+
+                        <template x-if="filteredData.length === 0">
+                            <tr>
+                                <td colspan="5" class="text-center py-10 px-6 text-gray-500">
+                                    <div class="flex flex-col items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                        <p class="font-semibold text-lg">No Results Found</p>
+                                        <p class="text-sm">Try adjusting your filters.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <footer class="text-center mt-8 text-sm text-gray-500">
+            <p>webbench.app &copy; 2025 by Jonathan Cooper. View source on <a href="https://github.com/ReallySnazzy/web-benchmarker" target="_blank" class="text-indigo-600 hover:underline">GitHub</a>.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
