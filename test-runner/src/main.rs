@@ -179,7 +179,7 @@ fn run_test(case: &TestCase) -> TestRun {
         panic!("Failed to start test case {}", case.number);
     }
     println!("Found webserver, running rewrk");
-    const STANDARD_TEST_DURATION: &str = "5s";
+    const STANDARD_TEST_DURATION: &str = "30s";
     let mut results = vec![];
     for test_parameter in default_test_parameters() {
         println!(
