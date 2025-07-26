@@ -22,3 +22,31 @@ revision = 1 # Bump this number when updates are made to the test to prioritize 
 
 The devenv project should contain processes that start the web framework and if it is a database test should also startup the database. Finally, the folder should be named the
 next sequential folder name after the largest folder name. An example is if the latest folder is 11, then the new one should be 12.
+
+## Machine Specs
+
+Below is the output of fastfetch on the machine running the benchmarks
+
+```
+$ fastfetch
+          ▗▄▄▄       ▗▄▄▄▄    ▄▄▄▖             someuser@bench
+          ▜███▙       ▜███▙  ▟███▛             --------------
+           ▜███▙       ▜███▙▟███▛              OS: NixOS XX.XX (Vicuna) x86_64
+            ▜███▙       ▜██████▛               Host: SER (V1.0)
+     ▟█████████████████▙ ▜████▛     ▟▙         Kernel: Linux X.X.X
+    ▟███████████████████▙ ▜███▙    ▟██▙        Uptime: 9 mins
+           ▄▄▄▄▖           ▜███▙  ▟███▛        Packages: 559 (nix-system)
+          ▟███▛             ▜██▛ ▟███▛         Shell: bash 5.X.XX
+         ▟███▛               ▜▛ ▟███▛          Terminal: /dev/pts/0
+▟███████████▛                  ▟██████████▙    CPU: AMD Ryzen 7 6800U (16) @ 4.77 GHz
+▜██████████▛                  ▟███████████▛    GPU: AMD Radeon 680M [Integrated]
+      ▟███▛ ▟▙               ▟███▛             Memory: 678.98 MiB / 19.31 GiB (3%)
+     ▟███▛ ▟██▙             ▟███▛              Swap: Disabled
+    ▟███▛  ▜███▙           ▝▀▀▀▀               Disk (/): 10.43 GiB / 467.88 GiB (2%) - ext4
+    ▜██▛    ▜███▙ ▜██████████████████▛         
+     ▜▛     ▟████▙ ▜████████████████▛         
+           ▟██████▙       ▜███▙
+          ▟███▛▜███▙       ▜███▙
+         ▟███▛  ▜███▙       ▜███▙
+         ▝▀▀▀    ▀▀▀▀▘       ▀▀▀▘
+```
