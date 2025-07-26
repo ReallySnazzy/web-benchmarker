@@ -3,5 +3,5 @@
 {
   languages.go.enable = true;
 
-  processes.webapp.exec = 'go run main.go';
+  processes.webapp.exec = "go run main.go";
 }
