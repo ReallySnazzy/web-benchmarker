@@ -6,5 +6,5 @@ async fn hello() -> String {
 
 #[tokio::main]
 async fn main() {
-    Ohkami::new(("/hello".GET(hello))).howl("localhost:3000").await
+    Ohkami::new(("/hello".GET(hello))).howl("0.0.0.0:3000").await
 }
