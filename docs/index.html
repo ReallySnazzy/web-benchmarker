@@ -25,6 +25,34 @@
             selectedTestType: 'all',
             testData: [],
             selectedParameters: '5 threads 1000 concurrent requests',
+            selectedSortKey: null,
+            selectedInverseSort: false,
+
+            toggleSort(val) {
+                if (this.selectedSortKey != val) {
+                    this.selectedSortKey = val;
+                    this.selectedInverseSort = false;
+                } else {
+                    this.selectedInverseSort = !this.selectedInverseSort;
+                }
+            },
+
+            formatRequestsPerSecond(num) {
+                if (num == null) {
+                    return 'ERROR';
+                }
+                let result = '';
+                num = Math.round(num);
+                while (num >= 1000) {
+                    result = '' 
+                        ? `${num % 1000},${result}`
+                        : (num % 1000).toString().padStart(3, '0');
+                    num = Math.floor(num / 1000);
+                }
+                return result != '' 
+                    ? `${num},${result}`
+                    : num.toString();
+            },
 
             get languages() {
                 const languages = this.testData.map(item => item.test_info.language);
@@ -85,6 +113,26 @@
                 const [selectedThreads, _, selectedConcurrency] = this.selectedParameters.split(' ');
                 data = data.filter(d => d.parameters.threads == selectedThreads)
                     .filter(d => d.parameters.concurrent_requests == selectedConcurrency);
+                switch (this.selectedSortKey) {
+                    case "requests_per_sec":
+                        data = data.toSorted((a, b) => (a.metrics.requests_avg ?? 0) - (b.metrics.requests_avg ?? 0));
+                        break;
+
+                    case "latency":
+                        data = data.toSorted((a, b) => (a.metrics.latency_avg ?? 0) - (b.metrics.latency_avg ?? 0));
+                        break;
+
+                    case "framework":
+                        data = data.toSorted((a, b) => a.framework.localeCompare(b.framework));
+                        break;
+
+                    case "language":
+                        data = data.toSorted((a, b) => a.language.localeCompare(b.language));
+                        break;
+                }
+                if (this.selectedInverseSort) {
+                    data = data.toReversed();
+                }
                 return data;
             }
         };
@@ -135,12 +183,62 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Language</th>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Test Type</th>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Framework</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                <a href="#" class="text-indigo-600 hover:underline" @click="toggleSort('language')">Language</a>
+                                <template x-if="selectedSortKey == 'language' && selectedInverseSort == false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 15l5-5 5 5"/>
+                                    </svg>
+                                </template>
+                                <template x-if="selectedSortKey == 'language' && selectedInverseSort == true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 9l5 5 5-5"/>
+                                    </svg>
+                                </template>
+                            </th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                Test Type
+                            </th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                <a href="#" class="text-indigo-600 hover:underline" @click="toggleSort('framework')">Framework</a>
+                                <template x-if="selectedSortKey == 'framework' && selectedInverseSort == false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 15l5-5 5 5"/>
+                                    </svg>
+                                </template>
+                                <template x-if="selectedSortKey == 'framework' && selectedInverseSort == true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 9l5 5 5-5"/>
+                                    </svg>
+                                </template>
+                            </th>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Notes</th>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Req/sec</th>
-                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Latency</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider text-end">
+                                <a href="#" class="text-indigo-600 hover:underline" @click="toggleSort('requests_per_sec')">Req/sec</a>
+                                <template x-if="selectedSortKey == 'requests_per_sec' && selectedInverseSort == false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 15l5-5 5 5"/>
+                                    </svg>
+                                </template>
+                                <template x-if="selectedSortKey == 'requests_per_sec' && selectedInverseSort == true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 9l5 5 5-5"/>
+                                    </svg>
+                                </template>
+                            </th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                <a href="#" class="text-indigo-600 hover:underline" @click="toggleSort('latency')">Latency</a>
+                                <template x-if="selectedSortKey == 'latency' && selectedInverseSort == false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 15l5-5 5 5"/>
+                                    </svg>
+                                </template>
+                                <template x-if="selectedSortKey == 'latency' && selectedInverseSort == true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M7 9l5 5 5-5"/>
+                                    </svg>
+                                </template>
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -152,7 +250,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="item.test_type"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" x-text="item.framework"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="item.notes"></td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="Math.round(item.metrics.requests_avg)"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-end" x-text="formatRequestsPerSecond(item.metrics.requests_avg)"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="`${item.metrics.latency_avg.toFixed(2)}ms +- ${item.metrics.latency_std_deviation.toFixed(2)}ms`"></td>
                             </tr>
                         </template>
