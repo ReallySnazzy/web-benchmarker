@@ -5,6 +5,7 @@
   packages = with pkgs; [ 
     openssl
     gmp
+    curl
   ];
   processes.webserver.exec = "cd web && dune exec bin/main.exe";
 }
