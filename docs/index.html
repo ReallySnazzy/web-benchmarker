@@ -53,6 +53,17 @@
             },
 
             get filteredData() {
+                const color_options = [
+                    'bg-red-100 text-red-800',
+                    'bg-orange-100 text-orange-800',
+                    'bg-yellow-100 text-yellow-800',
+                    'bg-green-100 text-green-800',
+                    'bg-blue-100 text-blue-800',
+                    'bg-indigo-100 text-indigo-800',
+                    'bg-violet-100 text-violet-800',
+                ];
+                const lang_options = this.languages;
+
                 let data = this.testData.flatMap(test => test.results.map((result) => ({test, result})))
                     .map(entry => ({
                         case_number: entry.test.case_number,
@@ -60,8 +71,10 @@
                         notes: entry.test.test_info.notes,
                         language: entry.test.test_info.language,
                         test_type: entry.test.test_info.test_type,
+                        framework: entry.test.test_info.framework,
                         metrics: entry.result.metrics,
-                        parameters: entry.result.parameter
+                        parameters: entry.result.parameter,
+                        lang_color: color_options[lang_options.findIndex(l => l == entry.test.test_info.language) % color_options.length]
                     }));
                 if (this.selectedLanguage !== 'all') {
                     data = data.filter(item => item.language == this.selectedLanguage);
@@ -124,6 +137,7 @@
                         <tr>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Language</th>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Test Type</th>
+                            <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Framework</th>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Notes</th>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Req/sec</th>
                             <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Latency</th>
@@ -133,9 +147,10 @@
                         <template x-for="item in filteredData" :key="item.case_number">
                             <tr class="hover:bg-gray-50 transition-colors duration-200">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-3 py-1 inline-flex text-sm font-semibold rounded-full" x-text="item.language"></span>
+                                    <span class="px-3 py-1 inline-flex text-sm font-semibold rounded-full" x-text="item.language" :class="item.lang_color"></span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" x-text="item.test_type"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="item.test_type"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" x-text="item.framework"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="item.notes"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="Math.round(item.metrics.requests_avg)"></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500" x-text="`${item.metrics.latency_avg.toFixed(2)}ms +- ${item.metrics.latency_std_deviation.toFixed(2)}ms`"></td>
