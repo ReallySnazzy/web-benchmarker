@@ -244,10 +244,33 @@ fn main() {
     let test_cases = load_test_cases();
     filter_deleted_tests(&mut previous_run_details, &test_cases);
     check_unsupported_lang(&test_cases, &supported_languages);
-    let run_result = match first_new_test_case(&previous_run_details, &test_cases) {
-        Some(new_test_case) => run_test(new_test_case),
-        None => run_test(oldest_test_case(&previous_run_details, &test_cases))
+    
+    // Check if a test case number was provided as a command line argument
+    let args: Vec<String> = std::env::args().collect();
+    let test_case_to_run = if args.len() > 1 {
+        // Parse the test case number from the command line argument
+        let test_number = args[1].parse::<TestNumber>().expect(
+            &format!(
+                "Invalid test case number '{}'. Please provide a valid number.",
+                args[1]
+            )
+        );
+        // Find the test case with the specified number
+        test_cases.iter().find(|case| case.number == test_number).expect(
+            &format!(
+                "Test case number {} not found",
+                test_number
+            )
+        )
+    } else {
+        // Use existing logic: run new test case or oldest test case
+        match first_new_test_case(&previous_run_details, &test_cases) {
+            Some(new_test_case) => new_test_case,
+            None => oldest_test_case(&previous_run_details, &test_cases)
+        }
     };
+    
+    let run_result = run_test(test_case_to_run);
     previous_run_details.retain(|run| run.case_number != run_result.case_number);
     previous_run_details.push(run_result);
     save_run_details(&previous_run_details);
