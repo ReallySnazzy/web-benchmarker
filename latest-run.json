@@ -1,212 +1,5 @@
 [
   {
-    "case_number": 5,
-    "test_type": "PlainText",
-    "test_info": {
-      "notes": "",
-      "language": "deno",
-      "framework": "Hono",
-      "test_type": "PlainText",
-      "url": "http://127.0.0.1:3000/",
-      "revision": 1
-    },
-    "run_timestamp": "2026-02-09T23:04:44.147509489Z",
-    "results": [
-      {
-        "parameter": {
-          "threads": 1,
-          "concurrent_requests": 1
-        },
-        "metrics": {
-          "latency_avg": 0.035675,
-          "latency_max": 3.017431,
-          "latency_min": 0.028925,
-          "latency_std_deviation": 0.008833067745424302,
-          "requests_avg": 27055.425688518917,
-          "requests_total": 405832,
-          "transfer_rate": 4112424.704654876,
-          "transfer_total": 61686464.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 2,
-          "concurrent_requests": 1
-        },
-        "metrics": {
-          "latency_avg": 0.034013,
-          "latency_max": 0.584741,
-          "latency_min": 0.028915,
-          "latency_std_deviation": 0.005983329731439033,
-          "requests_avg": 28430.045852082432,
-          "requests_total": 426451,
-          "transfer_rate": 4321366.96951653,
-          "transfer_total": 64820552.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 5,
-          "concurrent_requests": 1
-        },
-        "metrics": {
-          "latency_avg": 0.034075,
-          "latency_max": 0.395462,
-          "latency_min": 0.028795,
-          "latency_std_deviation": 0.0058836206127495525,
-          "requests_avg": 28401.121984244983,
-          "requests_total": 426017,
-          "transfer_rate": 4316970.541605238,
-          "transfer_total": 64754584.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 1,
-          "concurrent_requests": 25
-        },
-        "metrics": {
-          "latency_avg": 0.223476,
-          "latency_max": 0.792656,
-          "latency_min": 0.038053,
-          "latency_std_deviation": 0.02375766143930075,
-          "requests_avg": 111516.97708268932,
-          "requests_total": 1672769,
-          "transfer_rate": 16950580.516568776,
-          "transfer_total": 254260888.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 2,
-          "concurrent_requests": 25
-        },
-        "metrics": {
-          "latency_avg": 0.224185,
-          "latency_max": 3.299521,
-          "latency_min": 0.042771,
-          "latency_std_deviation": 0.02823033307045424,
-          "requests_avg": 111116.59447384324,
-          "requests_total": 1666767,
-          "transfer_rate": 16889722.360024173,
-          "transfer_total": 253348584.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 5,
-          "concurrent_requests": 25
-        },
-        "metrics": {
-          "latency_avg": 0.233386,
-          "latency_max": 0.8342459999999999,
-          "latency_min": 0.040427,
-          "latency_std_deviation": 0.03852939215243983,
-          "requests_avg": 106608.68163580826,
-          "requests_total": 1599152,
-          "transfer_rate": 16204519.608642854,
-          "transfer_total": 243071104.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 1,
-          "concurrent_requests": 100
-        },
-        "metrics": {
-          "latency_avg": 0.900499,
-          "latency_max": 2.753074,
-          "latency_min": 0.025439000000000003,
-          "latency_std_deviation": 0.0638224330802987,
-          "requests_avg": 110904.63524767754,
-          "requests_total": 1663621,
-          "transfer_rate": 16857504.557646986,
-          "transfer_total": 252870392.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 2,
-          "concurrent_requests": 100
-        },
-        "metrics": {
-          "latency_avg": 0.916431,
-          "latency_max": 6.220597,
-          "latency_min": 0.057409,
-          "latency_std_deviation": 0.06498090733086416,
-          "requests_avg": 108936.86827503431,
-          "requests_total": 1634111,
-          "transfer_rate": 16558403.977805214,
-          "transfer_total": 248384872.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 5,
-          "concurrent_requests": 100
-        },
-        "metrics": {
-          "latency_avg": 0.950159,
-          "latency_max": 2.34017,
-          "latency_min": 0.256237,
-          "latency_std_deviation": 0.09355127938001866,
-          "requests_avg": 105035.295241669,
-          "requests_total": 1575591,
-          "transfer_rate": 15965364.87673369,
-          "transfer_total": 239489832.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 1,
-          "concurrent_requests": 1000
-        },
-        "metrics": {
-          "latency_avg": 11.730485,
-          "latency_max": 446.05229,
-          "latency_min": 0.025028,
-          "latency_std_deviation": 7.111762191448759,
-          "requests_avg": 85201.90456948413,
-          "requests_total": 1278277,
-          "transfer_rate": 12950689.494561588,
-          "transfer_total": 194298104.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 2,
-          "concurrent_requests": 1000
-        },
-        "metrics": {
-          "latency_avg": 12.510049,
-          "latency_max": 44.131572,
-          "latency_min": 0.184241,
-          "latency_std_deviation": 0.8149510679955096,
-          "requests_avg": 79904.07720526797,
-          "requests_total": 1198959,
-          "transfer_rate": 12145419.735200731,
-          "transfer_total": 182241768.0
-        }
-      },
-      {
-        "parameter": {
-          "threads": 5,
-          "concurrent_requests": 1000
-        },
-        "metrics": {
-          "latency_avg": 12.951306,
-          "latency_max": 43.959085,
-          "latency_min": 2.0181690000000003,
-          "latency_std_deviation": 0.4793483946488148,
-          "requests_avg": 77129.58159277988,
-          "requests_total": 1157388,
-          "transfer_rate": 11723696.402102545,
-          "transfer_total": 175922976.0
-        }
-      }
-    ]
-  },
-  {
     "case_number": 4,
     "test_type": "PlainText",
     "test_info": {
@@ -2686,6 +2479,213 @@
           "requests_total": 3349807,
           "transfer_rate": 36620805.48131759,
           "transfer_total": 549368348.0
+        }
+      }
+    ]
+  },
+  {
+    "case_number": 5,
+    "test_type": "PlainText",
+    "test_info": {
+      "notes": "",
+      "language": "deno",
+      "framework": "Hono",
+      "test_type": "PlainText",
+      "url": "http://127.0.0.1:3000/",
+      "revision": 1
+    },
+    "run_timestamp": "2026-02-10T12:04:07.508022523Z",
+    "results": [
+      {
+        "parameter": {
+          "threads": 1,
+          "concurrent_requests": 1
+        },
+        "metrics": {
+          "latency_avg": 0.033904,
+          "latency_max": 5.039107,
+          "latency_min": 0.029506,
+          "latency_std_deviation": 0.010381495771920332,
+          "requests_avg": 28553.84365988303,
+          "requests_total": 428308,
+          "transfer_rate": 4340184.236302221,
+          "transfer_total": 65102816.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 2,
+          "concurrent_requests": 1
+        },
+        "metrics": {
+          "latency_avg": 0.033997,
+          "latency_max": 0.396895,
+          "latency_min": 0.029666,
+          "latency_std_deviation": 0.003924015915530231,
+          "requests_avg": 28460.18832942544,
+          "requests_total": 426903,
+          "transfer_rate": 4325948.626072667,
+          "transfer_total": 64889256.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 5,
+          "concurrent_requests": 1
+        },
+        "metrics": {
+          "latency_avg": 0.034636,
+          "latency_max": 0.522475,
+          "latency_min": 0.029136,
+          "latency_std_deviation": 0.00503541970144097,
+          "requests_avg": 27963.790926681973,
+          "requests_total": 419457,
+          "transfer_rate": 4250496.22085566,
+          "transfer_total": 63757464.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 1,
+          "concurrent_requests": 25
+        },
+        "metrics": {
+          "latency_avg": 0.233805,
+          "latency_max": 0.712696,
+          "latency_min": 0.04401400000000001,
+          "latency_std_deviation": 0.03695435481337216,
+          "requests_avg": 106554.3668892463,
+          "requests_total": 1598342,
+          "transfer_rate": 16196263.767165435,
+          "transfer_total": 242947984.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 2,
+          "concurrent_requests": 25
+        },
+        "metrics": {
+          "latency_avg": 0.230411,
+          "latency_max": 1.308331,
+          "latency_min": 0.088268,
+          "latency_std_deviation": 0.028211162952736436,
+          "requests_avg": 108099.72349047082,
+          "requests_total": 1621513,
+          "transfer_rate": 16431157.970551563,
+          "transfer_total": 246469976.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 5,
+          "concurrent_requests": 25
+        },
+        "metrics": {
+          "latency_avg": 0.233256,
+          "latency_max": 4.216086,
+          "latency_min": 0.039696,
+          "latency_std_deviation": 0.03435168653842705,
+          "requests_avg": 106675.01360363635,
+          "requests_total": 1600147,
+          "transfer_rate": 16214602.067752728,
+          "transfer_total": 243222344.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 1,
+          "concurrent_requests": 100
+        },
+        "metrics": {
+          "latency_avg": 0.972718,
+          "latency_max": 3.069955,
+          "latency_min": 0.027132,
+          "latency_std_deviation": 0.11828452369634204,
+          "requests_avg": 102636.52607736694,
+          "requests_total": 1539586,
+          "transfer_rate": 15600751.963759774,
+          "transfer_total": 234017072.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 2,
+          "concurrent_requests": 100
+        },
+        "metrics": {
+          "latency_avg": 0.937262,
+          "latency_max": 6.171741,
+          "latency_min": 0.090192,
+          "latency_std_deviation": 0.06532157033885141,
+          "requests_avg": 106545.68800547316,
+          "requests_total": 1598269,
+          "transfer_rate": 16194944.57683192,
+          "transfer_total": 242936888.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 5,
+          "concurrent_requests": 100
+        },
+        "metrics": {
+          "latency_avg": 0.964268,
+          "latency_max": 2.7407,
+          "latency_min": 0.28168699999999997,
+          "latency_std_deviation": 0.07490314283470433,
+          "requests_avg": 103552.70462521492,
+          "requests_total": 1553358,
+          "transfer_rate": 15740011.103032667,
+          "transfer_total": 236110416.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 1,
+          "concurrent_requests": 1000
+        },
+        "metrics": {
+          "latency_avg": 11.745174,
+          "latency_max": 453.516008,
+          "latency_min": 0.027362,
+          "latency_std_deviation": 6.75072703759571,
+          "requests_avg": 85052.42826061406,
+          "requests_total": 1276044,
+          "transfer_rate": 12927969.095613336,
+          "transfer_total": 193958688.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 2,
+          "concurrent_requests": 1000
+        },
+        "metrics": {
+          "latency_avg": 12.607098,
+          "latency_max": 50.883378,
+          "latency_min": 0.137772,
+          "latency_std_deviation": 0.913858061498774,
+          "requests_avg": 79288.94521394116,
+          "requests_total": 1189715,
+          "transfer_rate": 12051919.672519056,
+          "transfer_total": 180836680.0
+        }
+      },
+      {
+        "parameter": {
+          "threads": 5,
+          "concurrent_requests": 1000
+        },
+        "metrics": {
+          "latency_avg": 12.943726,
+          "latency_max": 22.045955,
+          "latency_min": 1.4789880000000002,
+          "latency_std_deviation": 0.671840991490585,
+          "requests_avg": 77171.64257019368,
+          "requests_total": 1158063,
+          "transfer_rate": 11730089.67066944,
+          "transfer_total": 176025576.0
         }
       }
     ]
